@@ -1,0 +1,21 @@
+before_install:
+  - sudo add-apt-repository ppa:maxmind/ppa -y
+  - sudo apt-get update -qq
+  - sudo apt-get install build-essential libtool autoconf libgcrypt-dev libgnutls28-dev pkg-config swig bison flex gtk-doc-tools libglib2.0-dev perl python-dev lua5.1 liblua5.1-dev ruby-dev libmysqlclient-dev libpq-dev libsqlite3-dev libxml2-dev libwrap0-dev libmaxminddb-dev -y
+  - sudo ln -s /usr/lib/libruby1.8.so /usr/lib/libruby.so
+  - sudo ldconfig
+  - git clone https://github.com/ToToL/libprelude.git
+  - cd libprelude && sh autogen.sh && ./configure --enable-gtk-doc && make && sudo make install && cd -
+  - sudo ldconfig
+  - git clone https://github.com/ToToL/libpreludedb.git
+  - cd libpreludedb && sh autogen.sh && ./configure --enable-gtk-doc && make && sudo make install && cd -
+  - sudo ldconfig
+language: c
+script: 
+- sh autogen.sh
+- ./configure
+- make
+- make distcheck
+- sudo make install 
+notifications:
+   irc: "irc.iiens.net#prelude"
